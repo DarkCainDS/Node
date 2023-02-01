@@ -1,0 +1,2 @@
+$env:NOMBRE="DarkCainDs"
+node entorno.js

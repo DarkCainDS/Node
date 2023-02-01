@@ -1,0 +1,7 @@
+npx nodemon archivo.js
+
+------------
+https://pm2.keymetrics.io/
+
+
+npx nodemon --inspect http.js
