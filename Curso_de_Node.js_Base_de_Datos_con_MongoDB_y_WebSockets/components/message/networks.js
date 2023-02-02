@@ -1,10 +1,25 @@
 const express = require('express');
+
+
 const response = require('../../network/response');
 const controller = require('./controller');
 const router = express.Router();
 
+
+const path = require("path")
+const multer = require("multer")
+
+const storage = multer.diskStorage({
+    destination : "uploads/files/",
+    filename : function (req, file, cb) {
+        cb(null, file.fieldname + "-" + Date.now() + 
+        path.extname(file.originalname))
+    }
+})
+
+const upload = multer({ storage: storage });
 router.get('/', function (req, res){
-    const filterMessages = req.query.user || null;
+    const filterMessages = req.query.chat || null;
 
     controller.getMessages(filterMessages)
     .then((messageList) => {
@@ -15,17 +30,17 @@ router.get('/', function (req, res){
     })
 });
 
-router.post('/', function (req, res)  {
-
-    controller.addMessage(req.body.user, req.body.message)
-    .then((fullMessage) => {
-        response.success(req, res, fullMessage, 201);
-    })
-    .catch(e => {
-        response.error(req, res, 'Informacion invalida', 400, 'error en el controlador');
-    });
-
+router.post('/', upload.single('file'), function (req, res) { 
+    console.log(req.file);
+    controller.addMessage(req.body.chat, req.body.user, req.body.message, req.file)
+        .then((fullMessage) => {
+            response.success(req, res, fullMessage, 201);    
+        })
+        .catch(e => {
+            response.error(req, res, 'Informacion invalida', 400, 'Error en el controlaor');
+        });
 });
+
 router.patch('/:id', (req, res) => {
     console.log(req.params.id);
     controller.updateMessage(req.params.id, req.body.message)

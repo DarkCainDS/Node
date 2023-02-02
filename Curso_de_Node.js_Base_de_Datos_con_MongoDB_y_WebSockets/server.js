@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const response = require('./network/response');
-//const router = require('./components/message/networks');
+const socket = require('./socket');
+const server = require('http').Server(app);
 const router = require('./network/routes');
 const db = require('./db');
 db('mongodb+srv://DarkCainDS:<password>@cursonode.1wtsmvs.mongodb.net/test')
@@ -10,6 +10,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}))
 // app.use(router);
 
+socket.connect(server);
 router(app);
 
 

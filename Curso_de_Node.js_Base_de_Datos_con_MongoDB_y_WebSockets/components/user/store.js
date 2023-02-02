@@ -1,4 +1,3 @@
-const { listUsers } = require('./controller');
 const Model = require('./model');
 
 function addUser(user){
