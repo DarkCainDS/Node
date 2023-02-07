@@ -1,25 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheets" src="./style.css" />
-    <title>Document</title>
-    <script src="socket.io/socket.io.js"></script>
-    
-</head>
+<html>
+    <head>
+        <script src="socket.io/socket.io.js"></script>
+    </head>
+    <body>
+        <h1>Mira la consola</h1>
+        <script>
+            var socket = io.connect('http://localhost:8080', {
+                forceNew: true,
+            });
 
-<body>
-    <h1>Mira la consola</h1>
-    <script>
-        var socket = io.connect('http://localhost:8080', {
-            forceNew: true,
-        });
-
-        socket.on('mensaje', (data) => {
-            console.log(data);
-        })
-    </script>
-</body>
+            socket.on('mensaje', (data) => {
+                console.log(data);
+            })
+        </script>
+    </body>
 </html>
