@@ -2,6 +2,7 @@ const express = require('express');
 const routerApi = require('./Routes/index');
 const port = 3000;
 const app = express();
+app.use(express.json());
 
 app.get("/", (req, res) =>{
   res.send("Hola mi server en Express");
