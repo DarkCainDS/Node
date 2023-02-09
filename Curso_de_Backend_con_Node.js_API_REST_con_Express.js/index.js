@@ -1,38 +1,42 @@
 const express = require('express');
-const routerApi = require('./Routes/index');
-const port = 3000;
+const routerApi = require('./routes');
+
+const { logErrors, errorHandler, boomErrorHandler } = require('./middleware/errorHanlder');
+
 const app = express();
+const port = 3000;
+
+const cors = require('cors');
+
+const whiteList = ['http://localhost:8080','https://myapp.co'];
+const options = {
+  origin: (origin, callback) => {
+    if(whiteList.includes(origin)){
+      callback(null, true);
+    }else{
+      callback(new Error('Unauthorized'))
+    }
+  }
+}
+app.use(cors(/*options*/));
+
 app.use(express.json());
 
-app.get("/", (req, res) =>{
-  res.send("Hola mi server en Express");
+app.get('/', (req, res) => {
+  res.send('hi mi server en express');
 });
 
-
-app.get("/NewRoute", (req, res) =>{
-    res.send("Hi, this is a new endPoint");
-});
-
-
-app.get("/Category/:categoryId/Products/:productId", (req, res) =>{
-    const { categoryId, productId} = req.params;
-    res.json({
-        categoryId,
-        productId
-    })
-});
-
-app.get("/users", (req, res) =>{
-    const { limit, offset} = req.query;
-    if(limit || offset){
-        res.json({limit,offset})
-    }else{
-        res.send('We dont have parameters')
-    }
-  });
-  
-app.listen(port, () =>{
-  console.log("The port is running in: " + port);
+app.get('/nueva-ruta', (req, res) => {
+  res.send('hi, soy una nueva ruta');
 });
 
 routerApi(app);
+
+app.use(logErrors);
+app.use(boomErrorHandler);
+
+
+
+app.listen(port, () => {
+  console.log('Mi port' +  port);
+});
