@@ -1,0 +1,30 @@
+docker-compose up -d postgres
+docker-compose down
+docker-compose ps
+docker-compose exec postgres bash
+
+docker ps
+//we can get the container id with this command
+
+docker inspect "Container ID"
+
+//inside of database
+\d+: look for relations
+\q : back
+
+
+
+
+docker architecture 
+services:
+    wordpress:
+        image: postgres
+        restart: always
+        ports:
+            - 5432
+        environment:
+            POSTGRES_DB: ${DB_NAME}
+            POSTGRES_USER: ${DB_USER}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+        volumes:
+            - ./db:/var/lib/postgresql/data
